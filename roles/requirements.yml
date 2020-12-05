@@ -1,7 +1,4 @@
-#- src: git@github.com:kost2191/docker-role.git
-- src: https://github.com/kost2191/docker-role.git
+#ansible role
+- src: https://github.com/Criptonite/ansible.git
   scm: git
-  version: master
-- src: https://github.com/kost2191/template_file.git
-  scm: git
-  version: master
+  version: main
