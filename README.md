@@ -71,6 +71,9 @@ ssh-copy-id -i ~/.ssh/id_lab_key.pub gudmian-agent@192.168.56.101
 > ansible-playbook -i ./environments/machines/inventory ./playbooks/ansible.yml
 
 ![](https://github.com/Criptonite/sopo/blob/master/images/ans_playbook.png)
+Для проверки перейдем из браузера по ip адрессам обеих машин:
+![](https://github.com/Criptonite/sopo/blob/master/images/ans_res_1.png)
+![](https://github.com/Criptonite/sopo/blob/master/images/ans_res_2.png)
 #### Исходный код:
 [Исходный код](https://github.com/Criptonite/sopo/tree/master/ansible)
 ***
