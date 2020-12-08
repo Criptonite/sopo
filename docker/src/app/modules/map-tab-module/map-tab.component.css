@@ -1,0 +1,8 @@
+.filters {
+  display: flex;
+  flex-direction: row;
+}
+
+.filter {
+  margin: 10px 10px 10px 10px;
+}

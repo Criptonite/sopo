@@ -1,0 +1,11 @@
+.selectors {
+  display: flex;
+  flex-direction: row;
+}
+.selector {
+  margin: 10px
+}
+
+.chart-block {
+  text-align: center;
+}

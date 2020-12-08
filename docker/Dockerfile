@@ -1,8 +1,10 @@
-FROM mhart/alpine-node:14
-RUN npm install -g @angular/cli
+FROM mhart/alpine-node:12
 WORKDIR /app
-COPY project/nosql-UI/package*.json ./
-RUN npm ci --production-only
-COPY project/nosql-UI /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json /app
+COPY package-lock.json /app
+RUN npm install
+RUN npm install -g @angular/cli@11.0.3
+COPY . /app
 EXPOSE 4200
-CMD ng serve
+CMD ng serve --host 0.0.0.0

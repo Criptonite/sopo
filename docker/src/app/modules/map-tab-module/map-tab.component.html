@@ -1,0 +1,9 @@
+<div class="map">
+  <div class="filters">
+    <p-dropdown class="filter" [options]="regions" optionLabel="name" [(ngModel)]="selectedRegion" placeholder="Select a City" filter="true" [showClear]="false"></p-dropdown>
+    <p-spinner class="filter" [(ngModel)]="year" [min]="2014" [max]="2018"></p-spinner>
+    <p-dropdown class="filter" [options]="types" optionLabel="typeName" [(ngModel)]="selectedType" placeholder="Select a type of accident" filter="true" [showClear]="true"></p-dropdown>
+    <p-button class="filter" label="Search accidents" (onClick)="getAccidents()"></p-button>
+  </div>
+  <app-map-component></app-map-component>
+</div>

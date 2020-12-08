@@ -1,0 +1,18 @@
+<div class="upload-block">
+  <ng-container *ngIf="!uploading">
+    <p-fileUpload name="myfile[]" customUpload="true" multiple="multiple" (uploadHandler)="myUploader($event)"></p-fileUpload>
+  </ng-container>
+  <ng-container *ngIf="uploading">
+    <p-progressSpinner></p-progressSpinner>
+  </ng-container>
+</div>
+<hr>
+<div class="export-block">
+  <ng-container *ngIf="!exporting">
+    <button pButton label="Download dump" (click)="getDump()"></button>
+  </ng-container>
+  <ng-container *ngIf="exporting">
+    <h3>Please wait...</h3>
+    <p-progressSpinner></p-progressSpinner>
+  </ng-container>
+</div>

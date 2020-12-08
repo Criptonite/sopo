@@ -1,0 +1,47 @@
+<div class="selectors">
+  <p-dropdown class="selector" [options]="chartTypes" [(ngModel)]="chartType"
+              placeholder="Select chart type" (onChange)="clearReportData()"></p-dropdown>
+  <p-listbox class="selector"
+             [options]="regions"
+             [(ngModel)]="selectedRegions"
+             multiple="multiple"
+             checkbox="checkbox"
+             filter="filter"
+             optionLabel="name"
+             [style]="{'width':'300px'}"
+             [listStyle]="{'max-height':'170px'}">
+    <p-header>
+      Regions
+    </p-header>
+  </p-listbox>
+  <p-listbox class="selector" [options]="years" [(ngModel)]="selectedYears" multiple="multiple" checkbox="checkbox"
+             filter="filter" optionLabel="name" [listStyle]="{'max-height':'170px'}">
+    <p-header>
+      Years
+    </p-header>
+  </p-listbox>
+  <div class="button">
+    <button pButton class="selector" label="Get report" (click)="getReport()"
+            [disabled]="!(selectedRegions && selectedRegions.length) || !(selectedYears && selectedYears.length) || chartType === undefined"></button>
+  </div>
+</div>
+<div class="chart-block">
+  <ng-container *ngIf="!reportLoading && isReportDataLoaded()">
+    <ng-container [ngSwitch]="chartType">
+      <ng-container *ngSwitchCase="2">
+        <p-chart type="pie" [data]="pieData" [options]="chartOptions('Men/Women in accidents')" height="60vh"></p-chart>
+      </ng-container>
+      <ng-container *ngSwitchCase="1">
+        <p-chart type="bar" [data]="barChartData" [options]="chartOptions('Deaths by regions')" height="60vh"></p-chart>
+      </ng-container>
+      <ng-container *ngSwitchCase="0">
+        <p-chart type="line" [data]="lineChartData" [options]="chartOptions('Deaths by TS count')" height="60vh"></p-chart>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="reportLoading">
+    <p-progressSpinner></p-progressSpinner>
+  </ng-container>
+</div>

@@ -1,0 +1,14 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.map-layers-configurator {
+  display: flex;
+  flex-direction: row;
+}
+
+.map-layer-button {
+  margin: 10px;
+}

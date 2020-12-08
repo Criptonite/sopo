@@ -1,0 +1,92 @@
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+<div class="map-layers-configurator">
+  <p-toggleButton class="map-layer-button" onLabel="Heat map layer enabled" offLabel="Heat map layer disabled"
+                  (onChange)="heatMapLayerChange($event)" [(ngModel)]="heatMapLayerEnabled"></p-toggleButton>
+  <p-toggleButton class="map-layer-button" onLabel="Marker layer enabled" offLabel="Marker layer disabled"
+                  (onChange)="markerLayerChange($event)" [(ngModel)]="markerLayerEnabled"></p-toggleButton>
+</div>
+<div>
+  <p-gmap #gmap [style]="{'width':'100%','height':'75vh', 'margin-bottom': '1em'}" [options]="options"
+          [overlays]="markerLayerEnabled ? overlays : null" (onMapReady)="onMapReadyEvent($event)"
+          (onOverlayClick)="handleOverlayClick($event)"></p-gmap>
+</div>
+
+<p-dialog [modal]="true" [draggable]="false" [resizable]="false" [(visible)]="shortInfoDialog"
+          [header]="'Детали аварии'">
+  <div *ngIf="selectedAccident" class="dialog-content">
+    <span><b>Дата аварии: </b>{{selectedAccident.date || 'Нет Данных'}}</span><br>
+    <span><b>Время аварии: </b>{{selectedAccident.time || 'Нет Данных'}}</span><br>
+    <span><b>Координаты: </b>{{selectedAccident.dtp_info.latitude}}/{{selectedAccident.dtp_info.longitude || 'Нет Данных'}}</span><br>
+    <span><b>Тип аварии: </b>{{selectedAccident.type || 'Нет Данных'}}</span><br>
+    <p-button label="Полный отчет" (onClick)="openDetailedReport()"></p-button>
+  </div>
+</p-dialog>
+
+<p-dialog [modal]="true" [draggable]="false" [resizable]="false" [(visible)]="longInfoDialog"
+          [header]="'Полный отчет по аварии'">
+  <div *ngIf="selectedAccident" class="dialog-content">
+    <div class="region-description">
+      <span><b>Код региона: </b>{{selectedAccident.code || 'Нет Данных'}}</span><br>
+      <span><b>Название региона: </b>{{selectedAccident.name || 'Нет Данных'}}</span><br>
+    </div>
+    <div class="ui-g">
+      <div class="ui-g-4">
+        <span><b>Дата: </b>{{selectedAccident.date || 'Нет Данных'}}</span><br>
+        <span><b>Район: </b>{{selectedAccident.district || 'Нет Данных'}}</span><br>
+        <span><b>Тип: </b>{{selectedAccident.type || 'Нет Данных'}}</span><br>
+      </div>
+      <div class="ui-g-4">
+        <span><b>Количество ТС: </b>{{selectedAccident.ts_count || 'Нет Данных'}}</span><br>
+        <span><b>Количество учасников: </b>{{selectedAccident.uch_count || 'Нет Данных'}}</span><br>
+        <span><b>Состояние дороги: </b>{{selectedAccident.dtp_info.sdor || 'Нет Данных'}}</span><br>
+      </div>
+      <div class="ui-g-4">
+        <span><b>НДУ: </b>{{selectedAccident.dtp_info.ndu || 'Нет Данных'}}</span><br>
+        <span><b>Освещение: </b>{{selectedAccident.dtp_info.light || 'Нет Данных'}}</span><br>
+        <span><b>Погода: </b>{{selectedAccident.dtp_info.weather || 'Нет Данных'}}</span><br>
+      </div>
+    </div>
+    <hr>
+    <div *ngFor="let uch of selectedAccident.dtp_info.uch_info; let i = index" class="uch">
+      <span><b>Участник №{{i+1}}</b></span><br>
+      <div class="ui-g">
+        <div class="ui-g-4">
+          <span><b>Тип участника: </b>{{uch.role || 'Нет Данных'}}</span><br>
+          <span><b>Пол: </b>{{uch.gender || 'Нет Данных'}}</span><br>
+        </div>
+        <div class="ui-g-8">
+          <span><b>Состояние: </b>{{uch.state || 'Нет Данных'}}</span><br>
+          <span><b>Нарушение ПДД: </b>{{uch.NPDD || 'Нет Данных'}}</span><br>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div *ngFor="let ts of selectedAccident.dtp_info.ts_info; let i = index" class="ts">
+      <span><b>ТС №{{i+1}}</b></span><br>
+      <div class="ui-g">
+        <div class="ui-g-4">
+          <span><b>Марка: </b>{{ts.marka || 'Нет Данных'}}</span><br>
+          <span><b>Модель: </b>{{ts.model || 'Нет Данных'}}</span><br>
+          <span><b>Год выпуска: </b>{{ts.g_v || 'Нет Данных'}}</span><br>
+        </div>
+        <div class="ui-g-8">
+          <span><b>Цвет: </b>{{ts.color || 'Нет Данных'}}</span><br>
+          <span><b>Тип: </b>{{ts.type || 'Нет Данных'}}</span><br>
+        </div>
+      </div>
+      <div *ngFor="let ts_uch of ts.uch_info; let j = index" class="uch">
+        <span><b>Участник №{{j+1}} (TC № {{i+1}})</b></span><br>
+        <div class="ui-g">
+          <div class="ui-g-4">
+            <span><b>Тип участника: </b>{{ts_uch.role || 'Нет Данных'}}</span><br>
+            <span><b>Пол: </b>{{ts_uch.gender || 'Нет Данных'}}</span><br>
+          </div>
+          <div class="ui-g-8">
+            <span><b>Состояние: </b>{{ts_uch.state || 'Нет Данных'}}</span><br>
+            <span><b>Нарушение ПДД: </b>{{ts_uch.NPDD || 'Нет Данных'}}</span><br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
