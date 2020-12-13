@@ -1,0 +1,17 @@
+stages:
+    - install_role
+    - apply_role
+
+install_galaxy:
+    stage: install_role
+    tags:
+        - ansible_ini
+    script:
+        - ansible-galaxy install -r ansible/roles/requirements.yml --force
+
+deploy_role:
+    stage: apply_role
+    tags:
+        - ansible_ini
+    script:
+        - ansible-playbook -i ansible/environments/machines/inventory ansible/playbooks/ansible.yml --extra-vars "ansible_sudo_pass=741236985" -D
