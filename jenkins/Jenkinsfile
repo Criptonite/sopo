@@ -1,0 +1,9 @@
+node('gudmian-agent'){
+    stage('Clone src') {
+        git branch: 'master', credentialsId: 'criptonite_creds', url: 'https://github.com/Criptonite/sopo.git'
+    }
+    stage('Play ansible') {
+        sh 'ansible-galaxy install -r ansible/roles/requirements.yml --force'
+        sh 'ansible-playbook -i ansible/environments/machines/inventory ansible/playbooks/ansible.yml --extra-vars "ansible_sudo_pass=${sudo_password}" -D'
+    }
+}
