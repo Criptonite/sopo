@@ -1,3 +1,10 @@
+# Содержание
+0. [Настройка gitlab](# setup gitlab)
+1. [Ansible](# ansible)
+2. [Dockerfile](# docker)
+3. [Gitlab-ci](# gitlab-ci)
+4. [Jenkins](# jenkins)
+
 # setup gitlab 
 Создадим виртуальную машину с установленной на нее ubuntu server. Настроим на машине bridge adapter. 
 Подключимся по ssh и установим докер
