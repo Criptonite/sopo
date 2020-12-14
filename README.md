@@ -221,3 +221,19 @@ check_interval = 0
 [Исходный код](https://github.com/Criptonite/sopo/blob/master/.gitlab-ci.yml)
 ***
 # jenkins
+**Необходимо:** Развернуть на сервере docker-контейнер с jenkins. Подключить агента и написать скрипт для job, который будет выполнять прокатку ansible-playbook. Прогнать настроенную job через jenkins.
+#### Настройки сервера
+На машине 192.168.56.3 развернем docker контейнеры по инструкции с официального сайта. Перейдем с управляющей машины на 192.168.56.3:8080 и увидим вебморду jenkins.
+#### Настройка агента
+Создадим группу и пользователя jenkins. Пробросим данному пользователю ключи для подключения по ssh. Переключимся на пользвателя jenkins и соединимся по ssh с gudmian-agent. Затем через панель управления добавим агента в jenkins. Выберем авторизацию по ключу и добавим ключ. 
+![](https://github.com/Criptonite/sopo/blob/master/images/jenkins_nodes.png)
+Теперь, когда агент подключен, можно переходить к написанию скрипта.
+#### Подготовка скрипта
+Код скрипта доступен в разделе "Исходный код"
+Для скрипта понадобилось создать параметры для Credentials гита и пароля для sudo
+Далее представлены результаты работы скрипта
+#### Результат
+![](https://github.com/Criptonite/sopo/blob/master/images/jenkins_res.png)
+![gif](https://github.com/Criptonite/sopo/blob/master/images/jenkins_pass_gif.gif)
+#### Исходный код:
+[Исходный код](https://github.com/Criptonite/sopo/blob/master/jenkins/Jenkinsfile)
