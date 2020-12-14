@@ -185,6 +185,39 @@ chunk {vendor} vendor.js, vendor.js.map (vendor) 3.98 MB [initial] [rendered]
 #### Исходный код:
 [Исходный код](https://github.com/Criptonite/sopo/tree/master/docker)
 ***
-# gitlab
+# gitlab-ci
+**Необходимо:** Развернуть на сервере docker-контейнер с gitlab-ee. Импортировать репозиторий с лабораторной по ansible в gitlab. Настроить gitlab-ci в gitlab. Написать job, который будет выполнять прокатку ansible-playbook. Установить и зарегистрировать gitlab-runner на машине-агенте. Прогнать настроенную джобу через gitlab-ci по пушу в репозиторий.  
+#### Настройка job
+Развернем gitlab в docker-contatiner на машине 192.168.56.3. Через интерфейс gitlab импортируем себе [репозиторий с лабораторной по ansible](https://github.com/Criptonite/sopo/tree/master).
+![](https://github.com/Criptonite/sopo/blob/master/images/gitlab_ci_imported.png)
+Создадим файл .gitlab-ci.yml в корне репозитория (содержимое файла можно посмотреть в разделе "Исходный код")
+Пайплайн не запускается т.к. нет зарегистрированных раннеров.
+#### Регистрация gitlab-runner
+На машине 192.168.56.101 установим и запустим раннер. При регистрации укажем следующие настройки:
+```
+root@gudmianagent-VirtualBox:/home/gudmian-agent# cat /etc/gitlab-runner/config.toml 
+concurrent = 1
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "gudmian-ci"
+  url = "http://192.168.56.3/"
+  token = "1-i1Q4Dym4XxErkiWMqy"
+  executor = "shell"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+```
+Пробросим ключи между user@gudmian-agent и user@gitlab-runner, чтобы ansible работал корректно. Для того, чтобы джоба прошла успешно, необходимо подключиться c gitlab-runner на gudmian-agent и разрешить использовать ssh при подключении. Для машины-агента также необходимо установить git и ansible. Также, для выполнения ansible-ом действий с разрешениями суперпользователя в инструкциях джобы передается пароль суперпользователя через переменные ansible (способ конечно не очень хороший, но приемлемый для лабораторной). После выполнения данных действия, gitlab-ci заработал корректно.
+#### Результат:
+![](https://github.com/Criptonite/sopo/blob/master/images/gitlab_ci_passed.png)
+![gif](https://github.com/Criptonite/sopo/blob/master/images/gitlab_ci_pass_gif.gif)
+#### Исходный код:
+[Исходный код](https://github.com/Criptonite/sopo/blob/master/.gitlab-ci.yml)
 ***
 # jenkins
